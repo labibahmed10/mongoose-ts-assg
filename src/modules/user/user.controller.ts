@@ -163,6 +163,29 @@ const getAllOrdersForSpecificUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+const userOrdersTotalPriceController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userService.userOrdersTotalPriceFromDB(Number(userId));
+    
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: 'Price calculation failed',
+      error: {
+        code: 404,
+        descripton: error?.issues ? error?.issues[0].message : error?.message,
+      },
+    });
+  }
+};
+
 export const userController = {
   createUserController,
   getAllUsersController,
@@ -171,4 +194,5 @@ export const userController = {
   deleteSingleUserController,
   putOrderForUserController,
   getAllOrdersForSpecificUser,
+  userOrdersTotalPriceController,
 };

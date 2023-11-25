@@ -10,5 +10,6 @@ userRoutes.delete('/:userId', userController.deleteSingleUserController);
 
 userRoutes.put('/:userId/orders', userController.putOrderForUserController);
 userRoutes.get('/:userId/orders', userController.getAllOrdersForSpecificUser);
+userRoutes.get('/:userId/orders/total-price', userController.userOrdersTotalPriceController);
 
 export default userRoutes;
