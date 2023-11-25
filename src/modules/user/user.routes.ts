@@ -8,4 +8,6 @@ userRoutes.get('/:userId', userController.getSingleUserController);
 userRoutes.put('/:userId', userController.updateSingleUserController);
 userRoutes.delete('/:userId', userController.deleteSingleUserController);
 
+userRoutes.put('/:userId/orders', userController.putOrderForUserController);
+
 export default userRoutes;

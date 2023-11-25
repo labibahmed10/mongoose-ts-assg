@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-import { userZodValidation } from './user.zod.validation';
+import { ordersZodValidation, userZodValidation } from './user.zod.validation';
 import { userService } from './user.service';
 
 const createUserController = async (req: Request, res: Response) => {
@@ -118,10 +118,35 @@ const deleteSingleUserController = async (req: Request, res: Response) => {
   }
 };
 
+const putOrderForUserController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { body } = req;
+    const validatedResult = ordersZodValidation.parse(body);
+
+    await userService.createOrderForUserInDB(Number(userId), validatedResult);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: 'Order creation failed',
+      error: {
+        code: 404,
+        descripton: error?.issues ? error?.issues[0].message : error?.message,
+      },
+    });
+  }
+};
 export const userController = {
   createUserController,
   getAllUsersController,
   getSingleUserController,
   updateSingleUserController,
   deleteSingleUserController,
+  putOrderForUserController,
 };

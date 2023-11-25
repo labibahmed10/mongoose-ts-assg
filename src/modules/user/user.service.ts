@@ -1,4 +1,4 @@
-import { IUser } from './user.interface';
+import { IUser, IUserOrders } from './user.interface';
 import { userModel } from './user.model';
 
 const createUserInDB = async (user: IUser) => {
@@ -46,10 +46,27 @@ const deleteUserFromDB = async (userId: number) => {
   }
 };
 
+const createOrderForUserInDB = async (
+  userId: number,
+  orderData: IUserOrders | undefined,
+) => {
+  const userExists = await userModel.isUserExists(userId);
+  if (userExists) {
+    const result = await userModel.findOneAndUpdate(
+      { userId },
+      { $push: { orders: { $each: [orderData] } } },
+    );
+    return result;
+  } else {
+    throw new Error(`User not found`);
+  }
+};
+
 export const userService = {
   createUserInDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateSingleUserFromDB,
   deleteUserFromDB,
+  createOrderForUserInDB,
 };
