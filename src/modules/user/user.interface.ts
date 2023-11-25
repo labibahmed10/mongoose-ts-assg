@@ -1,9 +1,9 @@
-interface IFullName {
+export interface IFullName {
   firstName: string;
   lastName: string;
 }
 
-interface IUserAddress {
+export interface IUserAddress {
   street: string;
   city: string;
   country: string;
