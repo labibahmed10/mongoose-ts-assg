@@ -6,14 +6,26 @@ const createUserInDB = async (user: IUser) => {
   return result;
 };
 
-const getAllUsers = async () => {
+const getAllUsersFromDB = async () => {
   const result = await userModel
     .find()
     .select('username fullName age email address');
   return result;
 };
 
+const getSingleUserFromDB = async (userId: number) => {
+  const userExists = await userModel.isUserExists(userId);
+
+  if (userExists) {
+    const result = await userModel.findOne({ userId });
+    return result;
+  } else {
+    throw new Error(`User not found`);
+  }
+};
+
 export const userService = {
   createUserInDB,
-  getAllUsers,
+  getAllUsersFromDB,
+  getSingleUserFromDB,
 };
