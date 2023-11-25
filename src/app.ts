@@ -1,5 +1,6 @@
-import express, { Application, Request, Response, urlencoded } from "express";
-import cors from "cors";
+import express, { Application, Request, Response, urlencoded } from 'express';
+import cors from 'cors';
+import userRoutes from './modules/user/user.routes';
 
 const app: Application = express();
 
@@ -10,15 +11,18 @@ app.use(cors());
 // url encoder
 app.use(urlencoded({ extended: true }));
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("App is running");
+//application routes
+app.use('/api/users', userRoutes);
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('App is running');
 });
 
 // global route error handler
-app.all("*", (req: Request, res: Response) => {
+app.all('*', (req: Request, res: Response) => {
   res.status(400).json({
     success: false,
-    message: "Invalid Route Name",
+    message: 'Invalid Route Name',
   });
 });
 export default app;

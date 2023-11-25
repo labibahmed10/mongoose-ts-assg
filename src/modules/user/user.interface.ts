@@ -22,7 +22,7 @@ export interface IUser {
   orders?: Array<IUserOrders>;
 }
 
-interface IUserOrders {
+export interface IUserOrders {
   productName: string;
   price: number;
   quantity: number;

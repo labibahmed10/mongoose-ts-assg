@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const fullNameZodValidation = z.object({
   firstName: z.string().trim().max(20),
-  lastname: z.string().trim().max(20),
+  lastName: z.string().trim().max(20),
 });
 
 const addressZodValidation = z.object({

@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { IFullName, IUser, IUserAddress } from './user.interface';
+import { IFullName, IUser, IUserAddress, IUserOrders } from './user.interface';
 import config from '../../utils/config';
 
 const fullNameSchema = new Schema<IFullName>({
@@ -12,6 +12,12 @@ const addressSchema = new Schema<IUserAddress>({
   street: { type: String, required: true },
   city: { type: String, required: true },
   country: { type: String, required: true },
+});
+
+const ordersSchema = new Schema<IUserOrders>({
+  productName: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true },
 });
 
 const userSchema = new Schema<IUser>({
@@ -27,7 +33,7 @@ const userSchema = new Schema<IUser>({
     required: true,
   },
   age: { type: Number, required: true },
-  email: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String], required: true },
   address: {
@@ -35,13 +41,7 @@ const userSchema = new Schema<IUser>({
     required: true,
   },
   orders: {
-    type: [
-      {
-        productName: { type: String, required: true },
-        price: { type: Number, required: true },
-        quantity: { type: Number, required: true },
-      },
-    ],
+    type: [ordersSchema],
     default: [],
   },
 });
@@ -56,6 +56,8 @@ userSchema.pre('save', async function (next) {
 
 userSchema.post('save', async function (doc, next) {
   doc.password = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  delete (doc as any).password;
   next();
 });
 
