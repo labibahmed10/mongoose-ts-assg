@@ -9,5 +9,6 @@ userRoutes.put('/:userId', userController.updateSingleUserController);
 userRoutes.delete('/:userId', userController.deleteSingleUserController);
 
 userRoutes.put('/:userId/orders', userController.putOrderForUserController);
+userRoutes.get('/:userId/orders', userController.getAllOrdersForSpecificUser);
 
 export default userRoutes;

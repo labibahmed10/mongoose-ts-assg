@@ -142,6 +142,27 @@ const putOrderForUserController = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getAllOrdersForSpecificUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await userService.getAllOrdersServiceFromDB(Number(userId));
+    res.status(200).json({
+      success: true,
+      message: 'Orders fatched successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: 'Orders failed to be fetched',
+      error: {
+        code: 404,
+        descripton: error?.issues ? error?.issues[0].message : error?.message,
+      },
+    });
+  }
+};
 export const userController = {
   createUserController,
   getAllUsersController,
@@ -149,4 +170,5 @@ export const userController = {
   updateSingleUserController,
   deleteSingleUserController,
   putOrderForUserController,
+  getAllOrdersForSpecificUser,
 };
