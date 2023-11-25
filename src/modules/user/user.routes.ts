@@ -6,5 +6,6 @@ userRoutes.post('/', userController.createUserController);
 userRoutes.get('/', userController.getAllUsersController);
 userRoutes.get('/:userId', userController.getSingleUserController);
 userRoutes.put('/:userId', userController.updateSingleUserController);
+userRoutes.delete('/:userId', userController.deleteSingleUserController);
 
 export default userRoutes;
