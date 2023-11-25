@@ -37,6 +37,7 @@ const userSchema = new Schema<IUser, IUserModel>({
   fullName: {
     type: fullNameSchema,
     required: true,
+    _id: false,
   },
   age: { type: Number, required: true },
   email: { type: String, unique: true, required: true },
@@ -45,6 +46,7 @@ const userSchema = new Schema<IUser, IUserModel>({
   address: {
     type: addressSchema,
     required: true,
+    _id: false,
   },
   orders: {
     type: [ordersSchema],
@@ -63,11 +65,6 @@ userSchema.pre('save', async function (next) {
     this.password,
     Number(config.bcrypt_salt_round),
   );
-  next();
-});
-
-userSchema.post('save', async function (doc, next) {
-  doc.password = '';
   next();
 });
 
