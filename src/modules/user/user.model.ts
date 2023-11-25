@@ -46,6 +46,12 @@ const userSchema = new Schema<IUser>({
   },
 });
 
+userSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
+  delete userObject.password;
+  return userObject;
+};
+
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
     this.password,
@@ -56,8 +62,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.post('save', async function (doc, next) {
   doc.password = '';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  delete (doc as any).password;
+
   next();
 });
 
